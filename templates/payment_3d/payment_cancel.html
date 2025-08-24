@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme İptal - Sipay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .cancel-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .cancel-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: slideIn 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cancel-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 40px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .cancel-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .cancel-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .info-item i {
+            margin-right: 10px;
+            width: 20px;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .cancel-container {
+                padding: 20px 10px;
+            }
+            
+            .cancel-card {
+                padding: 30px 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cancel-container">
+        <div class="cancel-card">
+            <div class="cancel-icon">
+                <i class="fas fa-times"></i>
+            </div>
+            
+            <h1 class="cancel-title text-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Ödeme İptal Edildi
+            </h1>
+            
+            <p class="cancel-message">
+                Ödeme işleminiz iptal edildi. Herhangi bir ücret tahsil edilmemiştir.
+                <br>
+                Tekrar ödeme yapmak isterseniz aşağıdaki butonları kullanabilirsiniz.
+            </p>
+
+            <div class="info-box">
+                <div class="info-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Ödeme işlemi güvenli bir şekilde iptal edildi</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Kartınızdan herhangi bir ücret çekilmedi</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <span>İstediğiniz zaman tekrar ödeme yapabilirsiniz</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{% url 'payment_form' %}" class="btn btn-action btn-primary">
+                    <i class="fas fa-credit-card"></i>
+                    Tekrar Ödeme Yap
+                </a>
+                <a href="/" class="btn btn-action btn-secondary">
+                    <i class="fas fa-home"></i>
+                    Ana Sayfa
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sayfa yüklendiğinde animasyon
+        window.addEventListener('load', function() {
+            const cancelCard = document.querySelector('.cancel-card');
+            cancelCard.style.opacity = '0';
+            cancelCard.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                cancelCard.style.transition = 'all 0.6s ease';
+                cancelCard.style.opacity = '1';
+                cancelCard.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
