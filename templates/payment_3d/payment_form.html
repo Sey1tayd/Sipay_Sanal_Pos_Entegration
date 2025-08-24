@@ -139,15 +139,17 @@
 
         .card-cvv {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             background: white;
             color: #333;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 14px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            min-width: 60px;
+            text-align: center;
         }
 
         .magnetic-stripe {
@@ -215,13 +217,24 @@
             letter-spacing: 2px;
         }
 
+        .cvv-input {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
         .row {
             display: flex;
             gap: 15px;
+            align-items: flex-end;
         }
 
         .col {
             flex: 1;
+        }
+
+        .col:last-child {
+            flex: 0.8;
         }
 
         .btn-pay {
@@ -413,8 +426,8 @@
                                     <i class="fas fa-lock me-2"></i>
                                     CVV
                                 </label>
-                                <input type="text" name="cvv" id="cardCvvInput" class="form-control" 
-                                       value="000" required>
+                                <input type="text" name="cvv" id="cardCvvInput" class="form-control cvv-input" 
+                                       value="000" maxlength="4" required>
                             </div>
                         </div>
                     </div>
@@ -430,6 +443,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Sipay 3D Secure simülasyon sayfasında otomatik "Yes" butonuna bas
+        function autoClickYes() {
+            // Sipay simülasyon sayfasında "Yes" butonunu bul ve tıkla
+            const yesButton = document.querySelector('button[name="result"][value="y"], #yes, .button[value="y"]');
+            if (yesButton) {
+                console.log('✅ Sipay 3D Secure simülasyon sayfasında "Yes" butonu bulundu, otomatik tıklanıyor...');
+                setTimeout(() => {
+                    yesButton.click();
+                }, 1000); // 1 saniye bekle sonra tıkla
+            }
+        }
+
+        // Sayfa yüklendiğinde kontrol et
+        window.addEventListener('load', function() {
+            // URL'de sipay.com.tr var mı kontrol et
+            if (window.location.href.includes('sipay.com.tr') || 
+                window.location.href.includes('provisioning.sipay.com.tr')) {
+                console.log('🎯 Sipay sayfası tespit edildi, otomatik "Yes" butonu aranıyor...');
+                autoClickYes();
+            }
+        });
+
+        // DOM değişikliklerini izle (dinamik içerik için)
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    // Yeni elementler eklendiğinde "Yes" butonunu ara
+                    const yesButton = document.querySelector('button[name="result"][value="y"], #yes, .button[value="y"]');
+                    if (yesButton) {
+                        console.log('✅ Sipay 3D Secure simülasyon sayfasında "Yes" butonu bulundu, otomatik tıklanıyor...');
+                        setTimeout(() => {
+                            yesButton.click();
+                        }, 1000);
+                        observer.disconnect(); // Bir kez tıkladıktan sonra izlemeyi durdur
+                    }
+                }
+            });
+        });
+
+        // Sayfa yüklendiğinde observer'ı başlat
+        document.addEventListener('DOMContentLoaded', function() {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+
         // Sayfa yüklendiğinde kartı güncelle
         window.addEventListener('load', function() {
             updateCardDisplay();
@@ -469,6 +529,9 @@
 
         document.getElementById('cardCvvInput').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) {
+                value = value.substring(0, 4);
+            }
             e.target.value = value;
             updateCardDisplay();
         });

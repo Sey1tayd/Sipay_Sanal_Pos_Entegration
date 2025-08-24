@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipay 3D Secure - Otomatik Yes Bookmarklet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .bookmarklet {
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .bookmarklet:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        .instructions {
+            background: #e8f4fd;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Sipay 3D Secure - Otomatik "Yes" Bookmarklet</h1>
+        
+        <p>Bu bookmarklet, Sipay'in 3D Secure simülasyon sayfasında otomatik olarak "Yes" butonuna basar.</p>
+        
+        <div class="instructions">
+            <h3>📋 Kullanım Talimatları:</h3>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                Aşağıdaki bookmarklet'i tarayıcınızın bookmark bar'ına sürükleyin
+            </div>
+            
+            <div class="step">
+                <span class="step-number">2</span>
+                Sipay'in 3D Secure simülasyon sayfasına gidin
+            </div>
+            
+            <div class="step">
+                <span class="step-number">3</span>
+                Bookmarklet'e tıklayın - otomatik olarak "Yes" butonuna basacak
+            </div>
+        </div>
+        
+        <h3>🔗 Bookmarklet:</h3>
+        <a href="javascript:(function(){console.log('🎯 Sipay 3D Secure simülasyon sayfasında otomatik Yes butonu aranıyor...');function findAndClickYes(){const selectors=['button[name=&quot;result&quot;][value=&quot;y&quot;]','#yes','.button[value=&quot;y&quot;]','input[name=&quot;result&quot;][value=&quot;y&quot;]','input[value=&quot;y&quot;]'];for(let selector of selectors){const button=document.querySelector(selector);if(button){console.log('✅ Yes butonu bulundu:',button);console.log('🔄 1 saniye sonra otomatik tıklanacak...');setTimeout(()=>{button.click();console.log('✅ Yes butonuna tıklandı!');},1000);return true;}}const allButtons=document.querySelectorAll('button, input[type=&quot;submit&quot;], input[type=&quot;button&quot;]');for(let button of allButtons){if(button.textContent.toLowerCase().includes('yes')||button.value==='y'||button.value==='yes'){console.log('✅ Yes butonu bulundu (text içeriği ile):',button);console.log('🔄 1 saniye sonra otomatik tıklanacak...');setTimeout(()=>{button.click();console.log('✅ Yes butonuna tıklandı!');},1000);return true;}}return false;}if(!findAndClickYes()){console.log('⚠️ Yes butonu bulunamadı, 2 saniye sonra tekrar denenecek...');setTimeout(()=>{if(!findAndClickYes()){console.log('❌ Yes butonu bulunamadı. Sayfayı yenileyip tekrar deneyin.');}},2000);}const observer=new MutationObserver(function(mutations){mutations.forEach(function(mutation){if(mutation.type==='childList'){findAndClickYes();}});});observer.observe(document.body,{childList:true,subtree:true});console.log('👀 DOM değişiklikleri izleniyor...');})();" class="bookmarklet">
+            🎯 Sipay Auto Yes
+        </a>
+        
+        <h3>💻 Manuel Kullanım (Console):</h3>
+        <p>Sipay sayfasında F12 > Console'da aşağıdaki kodu çalıştırabilirsiniz:</p>
+        
+        <div class="code-block">
+// Sipay 3D Secure simülasyon sayfasında otomatik "Yes" butonuna bas
+(function() {
+    console.log('🎯 Sipay 3D Secure simülasyon sayfasında otomatik "Yes" butonu aranıyor...');
+    
+    function findAndClickYes() {
+        const selectors = [
+            'button[name="result"][value="y"]',
+            '#yes',
+            '.button[value="y"]',
+            'input[name="result"][value="y"]',
+            'input[value="y"]'
+        ];
+        
+        for (let selector of selectors) {
+            const button = document.querySelector(selector);
+            if (button) {
+                console.log('✅ "Yes" butonu bulundu:', button);
+                console.log('🔄 1 saniye sonra otomatik tıklanacak...');
+                
+                setTimeout(() => {
+                    button.click();
+                    console.log('✅ "Yes" butonuna tıklandı!');
+                }, 1000);
+                
+                return true;
+            }
+        }
+        
+        // Text içeriğine göre ara
+        const allButtons = document.querySelectorAll('button, input[type="submit"], input[type="button"]');
+        for (let button of allButtons) {
+            if (button.textContent.toLowerCase().includes('yes') || 
+                button.value === 'y' || 
+                button.value === 'yes') {
+                console.log('✅ "Yes" butonu bulundu (text içeriği ile):', button);
+                console.log('🔄 1 saniye sonra otomatik tıklanacak...');
+                
+                setTimeout(() => {
+                    button.click();
+                    console.log('✅ "Yes" butonuna tıklandı!');
+                }, 1000);
+                
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // İlk deneme
+    if (!findAndClickYes()) {
+        console.log('⚠️ "Yes" butonu bulunamadı, 2 saniye sonra tekrar denenecek...');
+        
+        setTimeout(() => {
+            if (!findAndClickYes()) {
+                console.log('❌ "Yes" butonu bulunamadı. Sayfayı yenileyip tekrar deneyin.');
+            }
+        }, 2000);
+    }
+    
+    // DOM değişikliklerini izle
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                findAndClickYes();
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    console.log('👀 DOM değişiklikleri izleniyor...');
+})();
+        </div>
+        
+        <h3>🔧 Nasıl Çalışır:</h3>
+        <ul>
+            <li>🎯 Sipay'in 3D Secure simülasyon sayfasında "Yes" butonunu arar</li>
+            <li>🔍 Farklı selector'ları dener (id, class, name, value)</li>
+            <li>📝 Text içeriğine göre de arama yapar</li>
+            <li>⏱️ 1 saniye bekleyip otomatik tıklar</li>
+            <li>👀 DOM değişikliklerini izler (dinamik içerik için)</li>
+            <li>🔄 Bulamazsa 2 saniye sonra tekrar dener</li>
+        </ul>
+        
+        <h3>⚠️ Not:</h3>
+        <p>Bu bookmarklet sadece test amaçlıdır. Gerçek ödeme işlemlerinde güvenlik nedeniyle kullanmayın.</p>
+    </div>
+</body>
+</html>
